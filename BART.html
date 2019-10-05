@@ -1,30 +1,70 @@
 <!DOCTYPE html>
 
 <html lang="en-US">
-  <head>
-    <title>The Balloon Interactive Task</title>
 
-    <link href="https://mbtskoudsalg.com/images/burst-transparent-8-bit-5.png" rel="shortcut icon" type="image/png"/> <!-- tab im-->
-    <link href="BART.css" rel="stylesheet" type="text/css" />
-    <script src="BART.js" type="text/javascript"></script>
-  </head>
+<head>
+  <title>The Balloon Interactive Task</title>
 
-  <body>
-    <div id="form"> <!-- input control-->
-      <div id="participant_info"> <!-- participant information -->
-        asdf
-      </div> <!--end of participant_info-->
+  <link href="https://mbtskoudsalg.com/images/burst-transparent-8-bit-5.png" rel="shortcut icon" type="image/png" /> <!-- tab im-->
+  <link href="BART.css" rel="stylesheet" type="text/css" />
+  <script src="BART.js" type="text/javascript"></script>
+</head>
 
-      <div id="instructions"> <!-- instrutions -->
-        asdf
-      </div> <!-- end of instructions -->
+<body>
+  <div id="form">
+    <!-- input control-->
+    <div id="participant_info">
+      <!-- participant information -->
+      <fieldset>
 
-      <div id="task_screen"> <!--BART displayed-->
-        asdf
-      </div> <!-- end of task_screen-->
 
-      <div id="end_screen"> <!--ending screen-->
-        asdf
+      </fieldset>
+    </div>
+    <!--end of participant_info-->
+
+    <div id="instructions">
+      <!-- instructions -->
+      <h3 id="instructions_title">Instructions</h3>
+      <p>Help Idk what I'm doing, box and text changes in</p>
+      <button id="submit_button">Submit participant</button>
+      <p id="submission_status"></p>
+    </div> <!-- end of instructions -->
+
+    <div id="task_screen">
+      <!-- Initialize task -->
+      <div id="HUD">
+        <p class="hud_paragraph">Points won so far: <span id="won" class="points"></span></p>
+        <p class="hud_paragraph">Points lost so far: <span id="lost" class="points"></span></p>
       </div>
-    </div> <!--end of form-->
-  </body>
+
+      <div id="score_info">
+        <<h2 id="scoreMessage">Current score:</h2>
+          <p id="score"></p>
+      </div>
+
+      <div id="display">
+        <div id="balloon_parts">
+          <div><img src="balloon_top.png" alt="Balloon" id="balloon_top" /></div>
+          <div><img src="balloon_bottom.png" alt="Balloon" id="balloon_bottom" /></div>
+        </div>
+      </div>
+
+      <div id="buttons">
+        <button id="pump">Pump</button>
+        <button id="stop">Stop</button>
+      </div>
+
+    </div> <!-- end of Task screen -->
+
+    <div id="end_screen">
+      <!--ending screen-->
+      <h3>Your final scores today:</h3>
+      <p id="finalWon">Points won: </p>
+      <p id="finalLost">Points lost: </p>
+      <p>Thanks for participating! Have a great day!</p>
+    </div>
+
+
+  </div>
+  <!--end of form-->
+</body>

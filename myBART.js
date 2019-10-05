@@ -8,7 +8,6 @@
 (function() {
   let inRound;
   let remainingPumps = 0;
-  let probabilityArray = Array(12).fill(0);
   let exploded = false;
   let roundNum = 0;
   const roundLimit = 30;
@@ -18,6 +17,7 @@
     //on window open  --> defaults shows consent until submit_form = true
     //then switch to game screen
     document.getElementById("game").className = "hidden";
+    //document.getElementById("form").className = "hidden"; //necessary?
     document.getElementById("ending").className = "hidden";
     document.getElementById("submit_button").onclick = goToGame;
   };
