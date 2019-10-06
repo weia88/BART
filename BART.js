@@ -1,23 +1,23 @@
 "use strict";
 
 (function() {
-    let inRound;
     let remainingPumps = 0;
     let exploded = false;
     let roundNum = 0;
-    const roundLimit = 30;
+    const roundLimit = 3;
 
 
     window.onload = function() {
       //Loading page opens first page --> participant information information
       document.getElementById("task_screen").className = "hidden";
-      document.getElementById("ending").className = "hidden";
-      document.getElementsById("submit_button").onclick = start_screen;
+      document.getElementById("end_screen").className = "hidden";
+      document.getElementById("submit_button").onclick = start_screen;
     }
 
 
     function randomizeMaxPumps() {
-      remainingPumps = Math.floor((Math.random() * 128) + 1);
+      remainingPumps = Math.floor((Math.random() * 10) + 1);
+      return remainingPumps;
     }
 
 
@@ -65,7 +65,6 @@
 
     function newRound() {
       exploded = false;
-      inRound = true;
 
       roundNum += 1;
 
@@ -78,7 +77,7 @@
 
       //default size
       balloonTop.style.height = "75px";
-      balloonTop.style.widtht = "75px";
+      balloonTop.style.width = "75px";
 
       document.getElementById("score").innerHTML = "0.00"; // resets monetary amount
 
@@ -88,11 +87,10 @@
     }
 
     function pump() {
-      if (inRound) {
-        checkExploded();
-      }
 
-      if (!exploded) {
+//      checkExploded();
+
+      if (!checkExploded()) {
         remainingPumps -= 1;
         let balloonTop = document.getElementById("balloon_top");
         let prevHeight = parseInt(window.getComputedStyle(balloonTop).height);
@@ -112,36 +110,31 @@
 
         let score = parseFloat(document.getElementById("score").innerHTML);
         document.getElementById("score").innerHTML = "" + (score + 0.01).toFixed(2);
-
       }
     }
 
 
     function bank() {
-      if (inRound) {
-        let roundScore = document.getElementById("score");
-        let score = parseFloat(roundScore.innerHTML);
-        document.getElementById("scoreMessage").innerHTML = "Your final score for this round was:";
+      let roundScore = document.getElementById("score");
+      let score = parseFloat(roundScore.innerHTML);
+      //nonfunction ^ no need for inRound
+      if (exploded) {
+        let lost = document.getElementById("lost");
+        let pointsLost = parseFloat(lost.innerHTML);
+        lost.innerHTML = "" + (pointsLost + score).toFixed(2);
+        roundScore.innerHTML = "0.00";
 
-        if (exploded) {
-          let lost = document.getElementById("lost");
-          let pointsLost = parseFloat(lost.innerHTML);
-          lost.innerHTML = "" + (pointsLost + score).toFixed(2);
-          scoreP.innerHTML = "0.00";
-
-        } else {
-          let won = document.getElementById("won");
-          let pointsWon = parseFloat(won.innerHTML);
-          won.innerHTML = "" + (pointsWon + score).toFixed(2);
-        }
-
-        if (roundNum < roundLimit) {
-          startTask();
-        } else {
-          endGame(false);
-        }
+      } else {
+        let won = document.getElementById("won");
+        let pointsWon = parseFloat(won.innerHTML);
+        won.innerHTML = "" + (pointsWon + score).toFixed(2);
       }
-      inRound = false;
+
+      if (roundNum <= roundLimit) {
+        newRound();
+      } else {
+        endGame(false);
+      }
     }
 
 
@@ -151,15 +144,18 @@
         remainingPumps = randomizeMaxPumps();
         exploded = true;
         bank();
+        return true;
       } else {
         exploded = false;
+        return false;
       }
+
     }
 
     function endGame() {
       //display endscreen
       document.getElementById("task_screen").className = "hidden";
-      document.getElementById("ending").className = "showing";
+      document.getElementById("end_screen").className = "showing";
 
       let wonPoints = document.getElementById("won").innerHTML;
       document.getElementById("finalWon").innerHTML += wonPoints;
