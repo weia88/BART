@@ -1,3 +1,6 @@
+//// TODO:
+      //when the balloon is poppd, new screen to RESET balloon image
+
 "use strict";
 
 (function() {
@@ -16,7 +19,7 @@
 
 
     function randomizeMaxPumps() {
-      remainingPumps = Math.floor((Math.random() * 128) + 1);
+      remainingPumps = Math.floor((Math.random() * 10) + 1);
       return remainingPumps;
     }
 
@@ -60,7 +63,7 @@
       let pinSuccess = pinPattern.test(pin);
       let sessionIdSuccess = sessionIdPattern.test(session);
 
-      return (true); //pinSuccess && sessionIdPattern
+      return (true);
     }
 
 
@@ -83,14 +86,12 @@
       document.getElementById("score").innerHTML = "0.00"; // resets monetary amount
 
       let scoreTag = document.getElementById("scoreMessage");
-      scoreTag.innerHTML = "Current Score:";
+      scoreTag.innerHTML = "Current Money Accumulated:";
 
     }
 
     function pump() {
-      console.log("hi");
       if (!checkExploded()) {
-        console.log("hi2");
         remainingPumps -= 1;
         let balloonTop = document.getElementById("balloon_top");
         let prevHeight = parseInt(window.getComputedStyle(balloonTop).height);
@@ -117,17 +118,16 @@
     function bank() {
       let roundScore = document.getElementById("score");
       let score = parseFloat(roundScore.innerHTML);
-      //nonfunction ^ no need for inRound
       if (exploded) {
         let lost = document.getElementById("lost");
-        let pointsLost = parseFloat(lost.innerHTML);
-        lost.innerHTML = "" + (pointsLost + score).toFixed(2);
+        let moneyLost = parseFloat(lost.innerHTML);
+        lost.innerHTML = "" + (moneyLost + score).toFixed(2);
         roundScore.innerHTML = "0.00";
 
       } else {
         let won = document.getElementById("won");
-        let pointsWon = parseFloat(won.innerHTML);
-        won.innerHTML = "" + (pointsWon + score).toFixed(2);
+        let moneyWon = parseFloat(won.innerHTML);
+        won.innerHTML = "" + (moneyWon + score).toFixed(2);
       }
 
       if (roundNum < roundLimit) {
@@ -144,6 +144,11 @@
         remainingPumps = randomizeMaxPumps();
         exploded = true;
         bank();
+
+        //pop sound effect
+        var audio = new Audio('BalloonPop.wav');
+        audio.play();
+
         return true;
       } else {
         exploded = false;
@@ -157,11 +162,11 @@
       document.getElementById("task_screen").className = "hidden";
       document.getElementById("end_screen").className = "showing";
 
-      let wonPoints = document.getElementById("won").innerHTML;
-      document.getElementById("finalWon").innerHTML += wonPoints;
+      let moneyWon = document.getElementById("won").innerHTML;
+      document.getElementById("finalWon").innerHTML += moneyWon;
 
-      let lostPoints = document.getElementById("lost").innerHTML;
-      document.getElementById("finalLost").innerHTML += lostPoints;
+      let moneyLost = document.getElementById("lost").innerHTML;
+      document.getElementById("finalLost").innerHTML += moneyLost;
 
     }
 
