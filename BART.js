@@ -4,7 +4,7 @@
     let remainingPumps = 0;
     let exploded = false;
     let roundNum = 0;
-    const roundLimit = 3;
+    const roundLimit = 30;
 
 
     window.onload = function() {
@@ -16,7 +16,7 @@
 
 
     function randomizeMaxPumps() {
-      remainingPumps = Math.floor((Math.random() * 10) + 1);
+      remainingPumps = Math.floor((Math.random() * 128) + 1);
       return remainingPumps;
     }
 
@@ -35,6 +35,7 @@
         document.getElementById("won").innerHTML = "0.00";
         document.getElementById("lost").innerHTML = "0.00";
         document.getElementById("score").innerHTML = "0.00";
+
 
         newRound();
 
@@ -65,8 +66,8 @@
 
     function newRound() {
       exploded = false;
-
       roundNum += 1;
+      remainingPumps = randomizeMaxPumps();
 
       document.getElementById("pump").onclick = pump;
       document.getElementById("bank").onclick = bank;
@@ -87,10 +88,9 @@
     }
 
     function pump() {
-
-//      checkExploded();
-
+      console.log("hi");
       if (!checkExploded()) {
+        console.log("hi2");
         remainingPumps -= 1;
         let balloonTop = document.getElementById("balloon_top");
         let prevHeight = parseInt(window.getComputedStyle(balloonTop).height);
@@ -130,7 +130,7 @@
         won.innerHTML = "" + (pointsWon + score).toFixed(2);
       }
 
-      if (roundNum <= roundLimit) {
+      if (roundNum < roundLimit) {
         newRound();
       } else {
         endGame(false);
