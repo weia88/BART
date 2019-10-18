@@ -1,13 +1,16 @@
 //// TODO:
-      //when the balloon is poppd, new screen to RESET balloon image
-
+      //score should not be in monetary format but in digits and converted when needed**
+      //ensure infoJSON works, then find a way to export
 "use strict";
 
 (function() {
-    let remainingPumps = 0;
+    let maxPump = 0;
+    let nPumps = 0;
     let exploded = false;
     let roundNum = 0;
-    const roundLimit = 30;
+    const roundLimit = 3;
+
+    var infoJSON = [];
 
 
     window.onload = function() {
@@ -18,9 +21,9 @@
     }
 
 
-    function randomizeMaxPumps() {
-      remainingPumps = Math.floor((Math.random() * 10) + 1);
-      return remainingPumps;
+    function setMaxPumps() {
+      maxPump = Math.floor((Math.random() * 10) + 1);
+      return maxPump;
     }
 
 
@@ -63,17 +66,17 @@
       let pinSuccess = pinPattern.test(pin);
       let sessionIdSuccess = sessionIdPattern.test(session);
 
-      return (true);
+      return (true); //DONT FORGET TO SET TO ACTUALLY RETURN T or F
     }
 
 
     function newRound() {
       exploded = false;
       roundNum += 1;
-      remainingPumps = randomizeMaxPumps();
+      setMaxPumps();
 
-      document.getElementById("pump").onclick = pump;
-      document.getElementById("bank").onclick = bank;
+      document.getElementById("pump").onclick = pump; //include space button
+      document.getElementById("bank").onclick = bank; //include enter button
 
       //retrieve image
       let balloonTop = document.getElementById("balloon_top");
@@ -92,7 +95,7 @@
 
     function pump() {
       if (!checkExploded()) {
-        remainingPumps -= 1;
+        nPumps += 1;
         let balloonTop = document.getElementById("balloon_top");
         let prevHeight = parseInt(window.getComputedStyle(balloonTop).height);
 
@@ -124,10 +127,27 @@
         lost.innerHTML = "" + (moneyLost + score).toFixed(2);
         roundScore.innerHTML = "0.00";
 
+        //append score to JSON Lost * 100 to convert out of decimal
+        // score/exploded/money/nPumps
+        // having these four variables, pass to an obj that can be json
+        // once stringify is called, you can save that object to a list, a global list?
+        // At end screen this global list is saved to a file?
+        //
+        // //ex: var obj = {"score":score.variable, "exploded" :exploded.variable, "money": money.variable, "pumpRemaining":nPumps.variable }
+        // money is zero for loss, but not for won --> hard code zero
+        // obj is initilized each call, so ok to use (not global)
+
+
+        var obj = {"score": score, }
+
+
       } else {
         let won = document.getElementById("won");
         let moneyWon = parseFloat(won.innerHTML);
         won.innerHTML = "" + (moneyWon + score).toFixed(2);
+
+        //append score to JSON Won
+
       }
 
       if (roundNum < roundLimit) {
@@ -139,11 +159,12 @@
 
 
     function checkExploded() {
-      if (remainingPumps === 0) {
+      if (nPumps === maxPump) {
         document.getElementById("balloon_top").src = "balloon_exploded.png";
-        remainingPumps = randomizeMaxPumps();
         exploded = true;
         bank();
+        setMaxPumps();
+        nPumps = 0;
 
         //pop sound effect
         var audio = new Audio('BalloonPop.wav');
@@ -157,6 +178,12 @@
 
     }
 
+    function storeInfo(score, explode, total, pumps){
+      //saving the parameters to global infoJSON
+      var objJSON = {"score": score, "explosion": explode, "money": total, "nPumps": pumps};
+      infoJSON.push(objJSON);
+    }
+
     function endGame() {
       //display endscreen
       document.getElementById("task_screen").className = "hidden";
@@ -167,6 +194,8 @@
 
       let moneyLost = document.getElementById("lost").innerHTML;
       document.getElementById("finalLost").innerHTML += moneyLost;
+
+      //code for exporting to .csv
 
     }
 
