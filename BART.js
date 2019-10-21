@@ -3,7 +3,7 @@
 
 //1a. separate sheets or 90 rows of data? --> csv sheet implementation
 
-//2 add download screen
+//2. ParticipantId and Session incorporatoin
 
 //3. should the game repeat three times, should the game be refreshed 3 times or
 //have a move next session button, never needing to be refreshed only minimized
@@ -26,6 +26,7 @@
       //Loading page opens first page --> participant information information
       document.getElementById("task_screen").className = "hidden";
       document.getElementById("end_screen").className = "hidden";
+      document.getElementById("admin_screen").className = "hidden";
       document.getElementById("submit_button").onclick = start_screen;
     }
 
@@ -74,7 +75,7 @@
 
       let pinSuccess = pinPattern.test(pin);
       let sessionIdSuccess = sessionIdPattern.test(session);
-
+      
       return (true); //DONT FORGET TO SET TO ACTUALLY RETURN T or F
     }
 
@@ -146,7 +147,7 @@
         let moneyWon = parseFloat(won.innerHTML);
         won.innerHTML = "" + (moneyWon + score).toFixed(2);
 
-      //append score to infoJSON
+        //append score to infoJSON
         storeInfo(score * 100, moneyWon, exploded, maxPump, nPumps);
       }
       nPumps = 0;
@@ -200,23 +201,36 @@
       let moneyLost = document.getElementById("lost").innerHTML;
       document.getElementById("finalLost").innerHTML += moneyLost;
 
-      //code for exporting to .csv
-      var myJSON = JSON.stringify(infoJSON, null, 2);
-      document.getElementById("testJSON").innerHTML = myJSON;
-      //intentionally printing in html
 
-      download(myJSON, 'json.txt', 'text/plain');
+      //move to adminUse
+      document.getElementById("goToAdmin").onclick = adminUse;
     }
 
     function download(content, fileName, contentType) {
       //always will need to be downloaded --> download folder, browser security
       //**add another screen to require a button to initiate download
 
+      document.getElementById("testJSON").innerHTML = content;
+
+      //create Blob obj, then download on click
       var a = document.createElement("a");
-      var file = new Blob([content], {type: contentType});
+      var file = new Blob([content], {
+        type: contentType
+      });
       a.href = URL.createObjectURL(file);
       a.download = fileName;
       a.click();
+    }
+
+    function adminUse() {
+      document.getElementById("end_screen").className = "hidden";
+      document.getElementById("admin_screen").className = "showing";
+
+      var myJSON = JSON.stringify(infoJSON, null, 2);
+      //onclick perform download
+      document.getElementById("downloadJSON").onclick = function() {
+        download(myJSON, 'json.txt', 'text/plain'); // button to download
+      }
     }
 
   } //end of main function
