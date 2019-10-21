@@ -1,6 +1,15 @@
 //// TODO:
-      //score should not be in monetary format but in digits and converted when needed**
-      //ensure infoJSON works, then find a way to export
+//1. Add more detailed csv file tags --> custom file name, participant ID over three sheets, experimentor name?
+
+//1a. separate sheets or 90 rows of data? --> csv sheet implementation
+
+//2 add download screen
+
+//3. should the game repeat three times, should the game be refreshed 3 times or
+//have a move next session button, never needing to be refreshed only minimized
+
+//4..clean up let vs var initilizations
+
 "use strict";
 
 (function() {
@@ -121,24 +130,15 @@
     function bank() {
       let roundScore = document.getElementById("score");
       let score = parseFloat(roundScore.innerHTML);
-      if (exploded) {
+      if (exploded) { //true = popped, false = not popped
         let lost = document.getElementById("lost");
         let moneyLost = parseFloat(lost.innerHTML);
         lost.innerHTML = "" + (moneyLost + score).toFixed(2);
         roundScore.innerHTML = "0.00";
 
-        //append score to JSON Lost * 100 to convert out of decimal
-        // score/exploded/money/nPumps
-        // having these four variables, pass to an obj that can be json
-        // once stringify is called, you can save that object to a list, a global list?
-        // At end screen this global list is saved to a file?
-        //
-        // //ex: var obj = {"score":score.variable, "exploded" :exploded.variable, "money": money.variable, "pumpRemaining":nPumps.variable }
-        // money is zero for loss, but not for won --> hard code zero
-        // obj is initilized each call, so ok to use (not global)
 
-
-        var obj = {"score": score, }
+        //append score to infoJSON
+        storeInfo(-score * 100, moneyLost, exploded, maxPump, nPumps);
 
 
       } else {
@@ -146,14 +146,14 @@
         let moneyWon = parseFloat(won.innerHTML);
         won.innerHTML = "" + (moneyWon + score).toFixed(2);
 
-        //append score to JSON Won
-
+      //append score to infoJSON
+        storeInfo(score * 100, moneyWon, exploded, maxPump, nPumps);
       }
-
+      nPumps = 0;
       if (roundNum < roundLimit) {
         newRound();
       } else {
-        endGame(false);
+        endGame(); //contain false?
       }
     }
 
@@ -164,7 +164,6 @@
         exploded = true;
         bank();
         setMaxPumps();
-        nPumps = 0;
 
         //pop sound effect
         var audio = new Audio('BalloonPop.wav');
@@ -178,9 +177,15 @@
 
     }
 
-    function storeInfo(score, explode, total, pumps){
-      //saving the parameters to global infoJSON
-      var objJSON = {"score": score, "explosion": explode, "money": total, "nPumps": pumps};
+    function storeInfo(w, monetary, x, y, z) {
+      //saving the parameters to global
+      var objJSON = {
+        "score": w,
+        "monetary": monetary,
+        "explosion": x,
+        "maxPumps": y,
+        "nPumps": z
+      };
       infoJSON.push(objJSON);
     }
 
@@ -196,7 +201,22 @@
       document.getElementById("finalLost").innerHTML += moneyLost;
 
       //code for exporting to .csv
+      var myJSON = JSON.stringify(infoJSON, null, 2);
+      document.getElementById("testJSON").innerHTML = myJSON;
+      //intentionally printing in html
 
+      download(myJSON, 'json.txt', 'text/plain');
+    }
+
+    function download(content, fileName, contentType) {
+      //always will need to be downloaded --> download folder, browser security
+      //**add another screen to require a button to initiate download
+
+      var a = document.createElement("a");
+      var file = new Blob([content], {type: contentType});
+      a.href = URL.createObjectURL(file);
+      a.download = fileName;
+      a.click();
     }
 
   } //end of main function
