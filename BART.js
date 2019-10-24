@@ -1,14 +1,19 @@
-//// TODO:
-//1. Add more detailed csv file tags --> custom file name, participant ID over three sheets, experimentor name?
+  //// TODO:
+//1. Add more detailed csv file tags --> participant ID over three sheets, experimentor name?
+// append all data to one file --> 90 rows of data ()
 
-//1a. separate sheets or 90 rows of data? --> csv sheet implementation
+//2. remove lost counter display, but maintain counter for data
 
-//2. ParticipantId and Session incorporatoin
+//3. ParticipantId and Session incorporatoin, what are the limitations on inputs
 
-//3. should the game repeat three times, should the game be refreshed 3 times or
-//have a move next session button, never needing to be refreshed only minimized
+//4. balloon explosion image
 
-//4..clean up let vs var initilizations
+//5..clean up let vs var initilizations
+
+//remove "Money lost so far"
+
+//Inplement clear page system
+// RA input, instruction, task screen, end screen, download/save data
 
 "use strict";
 
@@ -49,7 +54,7 @@
         //hud top right
         //add dollar sign
         document.getElementById("won").innerHTML = "0.00";
-        document.getElementById("lost").innerHTML = "0.00";
+        document.getElementById("lost").innerHTML = "0.00"; // remove
         document.getElementById("score").innerHTML = "0.00";
 
 
@@ -75,7 +80,7 @@
 
       let pinSuccess = pinPattern.test(pin);
       let sessionIdSuccess = sessionIdPattern.test(session);
-      
+
       return (true); //DONT FORGET TO SET TO ACTUALLY RETURN T or F
     }
 
@@ -139,8 +144,7 @@
 
 
         //append score to infoJSON
-        storeInfo(-score * 100, moneyLost, exploded, maxPump, nPumps);
-
+        storeInfo(score * 100, score, exploded, maxPump, nPumps);
 
       } else {
         let won = document.getElementById("won");
@@ -148,7 +152,7 @@
         won.innerHTML = "" + (moneyWon + score).toFixed(2);
 
         //append score to infoJSON
-        storeInfo(score * 100, moneyWon, exploded, maxPump, nPumps);
+        storeInfo(score * 100, score, exploded, maxPump, nPumps);
       }
       nPumps = 0;
       if (roundNum < roundLimit) {
@@ -168,7 +172,7 @@
 
         //pop sound effect
         var audio = new Audio('BalloonPop.wav');
-        audio.play();
+        //audio.play();
 
         return true;
       } else {
@@ -178,15 +182,18 @@
 
     }
 
-    function storeInfo(w, monetary, x, y, z) {
+    function storeInfo(a, w, x, y, z) {
       //saving the parameters to global
       var objJSON = {
-        "score": w,
-        "monetary": monetary,
+        "PID": document.getElementById("Participant").value,
+        "SID": document.getElementById("Session").value,
+        "score": a,
+        "monetary": w,
         "explosion": x,
         "maxPumps": y,
         "nPumps": z
       };
+
       infoJSON.push(objJSON);
     }
 
@@ -206,6 +213,10 @@
       document.getElementById("goToAdmin").onclick = adminUse;
     }
 
+
+
+    //probably remove download and adminUse()
+    //replace with a function that intakes a file, uploads session data, returns updated file
     function download(content, fileName, contentType) {
       //always will need to be downloaded --> download folder, browser security
       //**add another screen to require a button to initiate download
@@ -214,9 +225,7 @@
 
       //create Blob obj, then download on click
       var a = document.createElement("a");
-      var file = new Blob([content], {
-        type: contentType
-      });
+      var file = new Blob([content], {type: contentType});
       a.href = URL.createObjectURL(file);
       a.download = fileName;
       a.click();
@@ -227,10 +236,13 @@
       document.getElementById("admin_screen").className = "showing";
 
       var myJSON = JSON.stringify(infoJSON, null, 2);
+
+      document.getElementById("testJSON").innerHTML = myJSON; //show info
+
       //onclick perform download
-      document.getElementById("downloadJSON").onclick = function() {
-        download(myJSON, 'json.txt', 'text/plain'); // button to download
-      }
+      //document.getElementById("downloadJSON").onclick = function() {
+        //download(myJSON, 'json.txt', 'text/plain');
+      //}
     }
 
   } //end of main function

@@ -13,12 +13,19 @@ h2 {
 
 fieldset {
   margin-bottom: 15px;
-  width: 25%;
+  width: 50%;
+  -moz-border-radius:8px;
+  -webkit-border-radius:8px;
+  border-radius:16px;
+  border-color: black;
+  position: relative;
+
 }
 
-fieldset, #instructions, #buttons, #balloon_parts, #participated, #ending {
+fieldset, #instructions, #buttons, #balloon_parts, #ending {
   margin-left: auto;
   margin-right: auto;
+  top: 15px;
 }
 
 body, #score, .round_paragraph {
@@ -35,11 +42,12 @@ img {
 
 #instructions {
   background-color: WhiteSmoke;
+  position: relative;
   text-align: left;
   border: 1px solid #dad9d4;
   margin-bottom: 20px;
   width: 55%;
-  padding: 10px;
+  padding: 25px;
 }
 
 #small_print {
@@ -81,16 +89,13 @@ img {
   width: 280px;
   height: 150px;
   color: white;
-  bottom:0;
-  right:0;
-  font-size: 15pt;
+  bottom: 25%;
+  right: 12.5%;
+  font-size: 16pt;
 }
 
-#participated {
-  width: 60%;
-}
 
-#participated, #buttons {
+#buttons {
   margin-top: 25px;
 }
 
@@ -117,10 +122,10 @@ img {
 }
 
 .hud_paragraph {
-  background-color: grey;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding: 10px;
+  background-color: black;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 20px;
 }
 
 .points {
