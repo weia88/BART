@@ -1,9 +1,12 @@
   //// TODO:
-  
+  //Inplement clear page system
+  // RA input, instruction, task screen, end screen, download/save data
+
+
 //1. Add more detailed csv file tags --> participant ID over three sheets, experimentor name?
 //1. append all data to one file --> 90 rows of data ()
 
-//2. remove lost counter display, but maintain counter for data
+//2. implement merge csv function
 
 //3. ParticipantId and Session incorporatoin, what are the limitations on inputs
 
@@ -11,8 +14,6 @@
 
 //5..clean up let vs var initilizations
 
-//Inplement clear page system
-// RA input, instruction, task screen, end screen, download/save data
 
 "use strict";
 
