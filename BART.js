@@ -14,6 +14,7 @@
 
 //5..clean up let vs var initilizations
 
+//Still incomplete
 
 "use strict";
 
@@ -22,7 +23,7 @@
     let nPumps = 0;
     let exploded = false;
     let roundNum = 0;
-    const roundLimit = 3;
+    const roundLimit = 30;
 
     var infoJSON = [];
 
@@ -37,7 +38,7 @@
 
 
     function setMaxPumps() {
-      maxPump = Math.floor((Math.random() * 10) + 1);
+      maxPump = Math.floor((Math.random() * 128) + 1);
       return maxPump;
     }
 
@@ -144,7 +145,8 @@
 
 
         //append score to infoJSON
-        storeInfo(score * 100, score, exploded, maxPump, nPumps);
+
+        storeInfo(Math.round(score * 100), exploded, maxPump, nPumps);
 
       } else {
         let won = document.getElementById("won");
@@ -152,7 +154,7 @@
         won.innerHTML = "" + (moneyWon + score).toFixed(2);
 
         //append score to infoJSON
-        storeInfo(score * 100, score, exploded, maxPump, nPumps);
+        storeInfo(Math.round(score * 100), exploded, maxPump, nPumps);
       }
       nPumps = 0;
       if (roundNum < roundLimit) {
@@ -172,7 +174,7 @@
 
         //pop sound effect
         var audio = new Audio('BalloonPop.wav');
-        //audio.play();
+        audio.play();
 
         return true;
       } else {
@@ -182,13 +184,12 @@
 
     }
 
-    function storeInfo(a, w, x, y, z) {
+    function storeInfo(a, x, y, z) {
       //saving the parameters to global
       var objJSON = {
         "PID": document.getElementById("Participant").value,
         "SID": document.getElementById("Session").value,
         "score": a,
-        "monetary": w,
         "explosion": x,
         "maxPumps": y,
         "nPumps": z
