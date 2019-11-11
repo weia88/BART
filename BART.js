@@ -3,14 +3,13 @@
   // RA input, instruction, task screen, end screen, download/save data
 
 
-//1. Add more detailed csv file tags --> participant ID over three sheets, experimentor name?
-//1. append all data to one file --> 90 rows of data ()
+// Using Flask, to merge A/B/C/ into D
 
-//2. implement merge csv function
+// Flask to allow for merging of all files
 
-//3. ParticipantId and Session incorporatoin, what are the limitations on inputs
+// ParticipantId and Session incorporatoin, what are the limitations on inputs
 
-//4. balloon explosion image
+// Balloon explosion image
 
 //5..clean up let vs var initilizations
 
