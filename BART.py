@@ -54,7 +54,7 @@ def get_javascript_data():
     submissions[pid].append(jsdata)
 
     # After 3rd run, save to file
-    if len(submissions[pid]) >= 3:
+    if len(submissions[pid]) >= 1:
         cat_and_write(pid, sid)
 
     return make_response("...")
