@@ -18,7 +18,13 @@ def cat_and_write(pid, sid):
     all_runs = []
     for s in sessions:
         all_runs += s
-    write_to_csv_file("data", pid, all_runs)
+    if os.path.exists(pid + ".csv") or os.path.exists(pid + "-backup.csv)"):
+        if os.path.exists(pid + "-backup.csv"):
+            write_to_csv_file("data", pid + "-backup(2)", all_runs)
+        else:
+            write_to_csv_file("data", pid + "-backup", all_runs) #basename returns file name - file type?
+    else:
+        write_to_csv_file("data", pid, all_runs)
 
 # </DANS CODE>
 
