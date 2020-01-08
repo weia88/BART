@@ -141,6 +141,15 @@
           storeInfo(Math.round(score * 100), exploded, maxPump, nPumps);
 
         } else {
+          //coin sound effect
+          var audio = new Audio("static/audio/casino.wav");
+          audio.volume = 0.7; // adjust volume
+          audio.play();
+          setTimeout(function(){
+            audio.pause();
+          }, 1500); //play for 1.5 seconds, then stops the audio
+
+
           let won = document.getElementById("won");
           let moneyWon = parseFloat(won.innerHTML);
           won.innerHTML = "" + (moneyWon + score).toFixed(2);
@@ -166,7 +175,7 @@
           setMaxPumps();
 
           //pop sound effect
-          var audio = new Audio("static/BalloonPop.wav");
+          var audio = new Audio("static/audio/BalloonPop.wav");
           audio.volume = 0.7; // adjust volume
           audio.play();
 
@@ -201,6 +210,11 @@
 
         let moneyLost = document.getElementById("lost").innerHTML;
         document.getElementById("finalLost").innerHTML += moneyLost;
+
+        //finale sound effect
+        var audio = new Audio("static/audio/finale.wav");
+        audio.volume = 0.7; // adjust volume
+        audio.play();
 
         //button onclick to adminUse()
         //Send data to pythoon script, with flask, to save file
