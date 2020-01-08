@@ -4,6 +4,7 @@ import pickle
 import json
 import os
 import csv
+import sys
 
 submissions = {}
 
@@ -11,20 +12,14 @@ submissions = {}
 def emergency():
     pickle.dump(submissions, open("emergency_backup.p", "wb"))
 
-def cat_and_write(pid, sid):
+def cat_and_write(filename, pid):
     print(submissions[pid])
     sessions = submissions[pid]
     # all_runs = [x for x in s for s in sessions]
     all_runs = []
     for s in sessions:
         all_runs += s
-    if os.path.exists(pid + ".csv") or os.path.exists(pid + "-backup.csv)"):
-        if os.path.exists(pid + "-backup.csv"):
-            write_to_csv_file("data", pid + "-backup(2)", all_runs)
-        else:
-            write_to_csv_file("data", pid + "-backup", all_runs) #basename returns file name - file type?
-    else:
-        write_to_csv_file("data", pid, all_runs)
+    write_to_csv_file("data", filename, all_runs)
 
 # </DANS CODE>
 
@@ -61,7 +56,7 @@ def get_javascript_data():
 
     # After 3rd run, save to file
     if len(submissions[pid]) >= 1:
-        cat_and_write(pid, sid)
+        cat_and_write(pid, pid)
 
     return make_response("...")
 

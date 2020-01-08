@@ -170,7 +170,6 @@
           audio.volume = 0.7; // adjust volume
           audio.play();
 
-
           return true;
         } else {
           exploded = false;
@@ -204,6 +203,13 @@
         document.getElementById("finalLost").innerHTML += moneyLost;
 
         //button onclick to adminUse()
+        //Send data to pythoon script, with flask, to save file
+        var myJSON = JSON.stringify({data: infoJSON});
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/upload", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(myJSON);
+
         document.getElementById("saveData").onclick = adminUse;
       }
 
@@ -218,15 +224,6 @@
         }
         refreshButton.className = "showing";
 
-        var myJSON = JSON.stringify({
-          data: infoJSON
-        });
-
-        //Send data to pythoon script, with flask, to save file
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/upload", true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(myJSON);
       }
 
     function findGetParameter(parameterName) {
